@@ -7,7 +7,7 @@ class Tile
   def initialize(board, pos, bomb = false)
     @board = board
     @pos = pos
-    @status = :uncovered # can either be uncovered, bombed, flagged, or revealed
+    @status = :hidden # can either be hidden, bombed, flagged, or revealed
     @bomb = bomb
   end
 

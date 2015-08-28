@@ -1,3 +1,5 @@
+require_relative 'tile.rb'
+
 class Board
   NUMBER_OF_BOMBS = 12
 
@@ -8,21 +10,15 @@ class Board
 
   def [](pos)
     row, col = pos[0], pos[1]
-    @rows[row][col]
+    @grid[row][col]
   end
-  #
-  # def []=(pos, mark)
-  #   raise "mark already placed there!" unless empty?(pos)
-  #
-  #   row, col = pos[0], pos[1]
-  #   @rows[row][col] = mark
-  # end
+
 
   private
 
   def populate_grid
-    @grid.map_with_index! do |row, i|
-      row.map_with_index! do |el, j|
+    @grid.map!.with_index do |row, i|
+      row.map!.with_index do |el, j|
         Tile.new(self, [i,j])
       end
     end
@@ -31,12 +27,12 @@ class Board
 
   def add_bomb
     i, j = (0..8).to_a.sample, (0..8).to_a.sample
-    while self.[[i, j]].bomb
+    while self[[i, j]].bomb
       i, j = (0..8).to_a.sample, (0..8).to_a.sample
     end
 
     @grid[i][j] = Tile.new(self, [i, j], true)
   end
 
-  
+
 end
