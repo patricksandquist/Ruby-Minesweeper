@@ -29,7 +29,7 @@ class Tile
 
   def reveal
     return :flagged if flagged?
-    
+
     if @bomb
       @status = :bombed
     else
@@ -50,7 +50,8 @@ class Tile
   def neighbors
     NEIGHBORS.map do |dis|
       x, y = dis[0] + @pos[0], dis[1] + @pos[1]
-      next if x < 0 || y < 0 || x > 8 || y > 8
+      next if x < 0 || y < 0 ||
+              x >= @board.side_length || y >= @board.side_length
       @board[[x, y]]
     end.compact
   end
