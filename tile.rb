@@ -40,11 +40,7 @@ class Tile
   end
 
   def flag
-    @status = :flagged
-  end
-
-  def toggle_flag!
-
+    @status = flagged? ? :hidden : :flagged
   end
 
   def neighbor_bomb_count
