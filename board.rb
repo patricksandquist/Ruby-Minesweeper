@@ -13,6 +13,12 @@ class Board
     @grid[row][col]
   end
 
+  def reveal_tile(tile)
+    value = tile.reveal
+    tile.neighbors.each { |neighbor| reveal_tile(neighbor) } if value.zero?
+
+    value
+  end
 
   private
 
