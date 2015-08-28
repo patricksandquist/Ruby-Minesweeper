@@ -31,7 +31,7 @@ class Game
 
   def get_pos
     puts "Enter coordinates."
-    gets.chomp.gsub(/\D/, "").split(//).map(&:to_i)
+    gets.chomp.split(",").map { |el| el.gsub(/\D/, "").to_i }
   end
 
   def execute(action, pos)
