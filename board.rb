@@ -33,17 +33,25 @@ class Board
   end
 
   def display
-    puts "    #{(0...@side_length).to_a.join(" ")}"
-    puts "    #{"- " * (@side_length)}"
+    print "       "
+    (0...@side_length).each do |i|
+      print '%-3s' % i
+    end
+    puts
+    puts "     #{"-" * @side_length * 3}--"
     @grid.each_with_index do |row, idx|
-      print "#{idx} | "
+      print '%3s' % idx + " |  "
       row.each do |el|
-        print "#{el.to_s} "
+        print "#{el.to_s}  "
       end
       puts "| #{idx}"
     end
-    puts "    #{"- " * (@side_length)}"
-    puts "    #{(0...@side_length).to_a.join(" ")}"
+    puts "     #{"-" * @side_length * 3}--"
+    print "       "
+    (0...@side_length).each do |i|
+      print '%-3s' % i
+    end
+    puts
 
     nil
   end
