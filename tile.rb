@@ -32,12 +32,14 @@ class Tile
   end
 
   def neighbor_bomb_count
+    neighbors.count { |neighbor| neighbor.bomb }
+  end
 
-    NEIGHBORS.inject(0) do |count, dis|
+  def neighbors
+    NEIGHBORS.map do |dis|
       x, y = dis[0] + pos[0], dis[1] + pos[1]
-      count + 1 if board[[x, y]].bomb
+      board[[x, y]]
     end
-
   end
 
 end
