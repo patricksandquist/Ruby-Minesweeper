@@ -17,7 +17,18 @@ class Board
     value = tile.reveal
     tile.neighbors.each { |neighbor| reveal_tile(neighbor) } if value.zero?
 
-    value
+    value # flagged, bomb, or number of neighboring bombs
+  end
+
+  def display
+    @grid.each do |row|
+      row.each do |el|
+        print "#{el.to_s} "
+      end
+      print "\n"
+    end
+
+    nil
   end
 
   private
