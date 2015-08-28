@@ -33,12 +33,17 @@ class Board
   end
 
   def display
-    @grid.each do |row|
+    puts "    #{(0...@side_length).to_a.join(" ")}"
+    puts "    #{"- " * (@side_length)}"
+    @grid.each_with_index do |row, idx|
+      print "#{idx} | "
       row.each do |el|
         print "#{el.to_s} "
       end
-      print "\n"
+      puts "| #{idx}"
     end
+    puts "    #{"- " * (@side_length)}"
+    puts "    #{(0...@side_length).to_a.join(" ")}"
 
     nil
   end
@@ -51,16 +56,16 @@ class Board
         Tile.new(self, [i,j])
       end
     end
-    @number_of_bombs.times { add_bomb }
+
+    add_bombs
   end
 
-  def add_bomb
-    i, j = (0...side_length).to_a.sample, (0...side_length).to_a.sample
-    while self[[i, j]].bomb
-      i, j = (0...side_length).to_a.sample, (0...side_length).to_a.sample
-    end
+  def add_bombs
+    range = (0...side_length).to_a
+    all_positions = range.product(range)
+    bomb_positions = all_positions.sample(@number_of_bombs)
 
-    @grid[i][j] = Tile.new(self, [i, j], true)
+    bomb_positions.each { |pos| self[pos].bomb = true }
   end
 
   def game_over
@@ -69,13 +74,11 @@ class Board
   end
 
   def won?
-    @grid.each do |row|
-      row.each do |el|
-        return false if (el.flagged? && !el.bomb) || (el.bomb && !el.flagged?)
+    @grid.none? do |row|
+      row.none? do |el|
+        (el.flagged? && !el.bomb) || (el.bomb && !el.flagged?)
       end
     end
-
-    true
   end
 
   def winner
@@ -87,5 +90,4 @@ class Board
     display
     Kernel.abort("You win!")
   end
-
 end
