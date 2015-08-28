@@ -2,8 +2,7 @@ class Tile
   NEIGHBORS = [[0, 1], [1, 1], [1, 0], [1, -1],
                [0, -1], [-1, -1], [-1, 0], [-1, 1]]
 
-  attr_accessor :status
-  attr_reader :bomb
+  attr_reader :bomb, :status
 
   def initialize(board, pos, bomb = false)
     @board = board
@@ -26,9 +25,13 @@ class Tile
 
   def reveal
     return :bomb if @bomb
-    self.status = :revealed
+    @status = :revealed
 
     neighbor_bomb_count
+  end
+
+  def flag
+    @status = :flagged
   end
 
   def neighbor_bomb_count
