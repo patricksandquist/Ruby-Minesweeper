@@ -29,8 +29,12 @@ class Tile
 
   def reveal
     return :flagged if flagged?
-    return :bomb if @bomb
-    @status = :revealed
+    
+    if @bomb
+      @status = :bombed
+    else
+      @status = :revealed
+    end
 
     neighbor_bomb_count
   end
@@ -45,10 +49,10 @@ class Tile
 
   def neighbors
     NEIGHBORS.map do |dis|
-      x, y = dis[0] + pos[0], dis[1] + pos[1]
+      x, y = dis[0] + @pos[0], dis[1] + @pos[1]
       next if x < 0 || y < 0 || x > 8 || y > 8
-      board[[x, y]]
-    end
+      @board[[x, y]]
+    end.compact
   end
 
   def to_s

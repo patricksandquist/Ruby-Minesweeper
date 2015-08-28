@@ -15,7 +15,12 @@ class Board
 
   def reveal_tile(tile)
     value = tile.reveal
-    tile.neighbors.each { |neighbor| reveal_tile(neighbor) } if value.zero?
+    game_over if tile.bombed?
+    if value.zero?
+      tile.neighbors.each do |neighbor|
+        reveal_tile(neighbor) unless neighbor.revealed?
+      end
+    end
 
     value # flagged, bomb, or number of neighboring bombs
   end
@@ -51,5 +56,9 @@ class Board
     @grid[i][j] = Tile.new(self, [i, j], true)
   end
 
+  def game_over
+    display
+    Kernel.abort("You lose!")
+  end
 
 end
