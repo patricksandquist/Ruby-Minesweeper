@@ -1,4 +1,6 @@
 require_relative 'board.rb'
+require 'yaml'
+require 'byebug'
 
 class MinesweeperInputError < StandardError
 end
@@ -35,11 +37,14 @@ class Game
   end
 
   def execute(action, pos)
+    # debugger
     case action
     when "f"
       @board.flag_tile(@board[pos])
     when "r"
       @board.reveal_tile(@board[pos])
+    when "s"
+      save
     end
   end
 
@@ -70,9 +75,23 @@ class Game
 
     [length, difficulty]
   end
+
+  def save
+    puts "Enter a file name"
+    filename = gets.chomp
+    File.write(filename, self.to_yaml)
+
+    Kernel.abort("Goodbye!")
+  end
 end
 
 if __FILE__ == $PROGRAM_NAME
-  minesweeper = Game.new
-  minesweeper.run
+  if ARGV.empty?
+    minesweeper = Game.new
+    minesweeper.run
+  else
+    serialized_game = File.read(ARGV.shift)
+    minesweeper = YAML::load(serialized_game)
+    minesweeper.run
+  end
 end

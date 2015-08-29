@@ -17,8 +17,8 @@ class Board
 
   def reveal_tile(tile)
     value = tile.reveal
-    game_over if tile.bombed?
-    if value.zero?
+    game_over if !tile.flagged? && tile.bombed?
+    if value == 0
       tile.neighbors.each do |neighbor|
         reveal_tile(neighbor) unless neighbor.revealed?
       end
@@ -82,11 +82,20 @@ class Board
   end
 
   def won?
-    @grid.none? do |row|
-      row.none? do |el|
-        (el.flagged? && !el.bomb) || (el.bomb && !el.flagged?)
+    @grid.each do |row|
+      row.each do |el|
+        return false if el.flagged? && !el.bomb
       end
     end
+    flagged_and_unhidden = 0
+    @grid.each do |row|
+      row.each do |el|
+        flagged_and_unhidden += 1 if el.flagged? || !el.hidden?
+      end
+    end
+    return true if flagged_and_unhidden == side_length ** 2 - @number_of_bombs
+
+    false
   end
 
   def winner
